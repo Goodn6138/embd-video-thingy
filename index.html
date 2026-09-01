@@ -2,12 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Embedded Video</title>
+    <title>Watch this video</title>
+
+    <meta
+        name="description"
+        content="Watch this video online."
+    >
+
+    <!-- Open Graph / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta
+        property="og:title"
+        content="Watch this video"
+    >
+    <meta
+        property="og:description"
+        content="Tap to watch the video."
+    >
+    <meta
+        property="og:url"
+        content="https://embd-video-thingy.vercel.app/"
+    >
+    <meta
+        property="og:site_name"
+        content="Embedded Video"
+    >
+
+    <!-- IMPORTANT: absolute HTTPS URL -->
+    <meta
+        property="og:image"
+        content="https://embd-video-thingy.vercel.app/preview.jpg"
+    >
+
+    <meta
+        property="og:image:width"
+        content="1200"
+    >
+    <meta
+        property="og:image:height"
+        content="630"
+    >
+    <meta
+        property="og:image:type"
+        content="image/jpeg"
+    >
+
+    <!-- Twitter/X fallback -->
+    <meta
+        name="twitter:card"
+        content="summary_large_image"
+    >
+    <meta
+        name="twitter:title"
+        content="Watch this video"
+    >
+    <meta
+        name="twitter:description"
+        content="Tap to watch the video."
+    >
+    <meta
+        name="twitter:image"
+        content="https://embd-video-thingy.vercel.app/preview.jpg"
+    >
 
     <style>
         * {
@@ -18,134 +80,87 @@
         body {
             margin: 0;
             min-height: 100%;
-            font-family:
-                Inter,
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-            background: #0b0b0f;
-            color: #ffffff;
         }
 
         body {
+            background: #080808;
+            color: white;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+
             display: flex;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 24px;
         }
 
         .container {
             width: 100%;
             max-width: 1000px;
+            margin: auto;
         }
 
         h1 {
-            margin: 0 0 24px;
             font-size: 28px;
-            line-height: 1.2;
+            margin: 0 0 20px;
         }
 
-        .video-wrapper {
+        .video-container {
             width: 100%;
-            overflow: hidden;
-            border-radius: 16px;
             background: #000;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.45);
+            border-radius: 14px;
+            overflow: hidden;
         }
 
         video {
             display: block;
             width: 100%;
             height: auto;
-            aspect-ratio: 16 / 9;
+            max-height: 80vh;
             background: #000;
         }
 
-        .description {
-            margin-top: 16px;
-            color: #a1a1aa;
+        .info {
+            margin-top: 18px;
+            color: #999;
             font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .status {
-            margin-top: 20px;
-            padding: 12px 14px;
-            border: 1px solid #27272a;
-            border-radius: 10px;
-            background: #18181b;
-            color: #a1a1aa;
-            font-size: 13px;
-        }
-
-        .status.ok {
-            color: #86efac;
-        }
-
-        .status.error {
-            color: #fca5a5;
+            line-height: 1.5;
         }
     </style>
 </head>
 
 <body>
-    <main class="container">
-        <h1>Embedded Video</h1>
 
-        <div class="video-wrapper">
-            <video
-                controls
-                preload="metadata"
-                playsinline
+<main class="container">
+
+    <h1>Watch this video</h1>
+
+    <div class="video-container">
+        <video
+            controls
+            playsinline
+            preload="metadata"
+            poster="/preview.jpg"
+        >
+            <source
+                src="/videos/sample.mp4"
+                type="video/mp4"
             >
-                <source
-                    src="/videos/sample.mp4"
-                    type="video/mp4"
-                >
 
-                Your browser does not support HTML5 video.
-            </video>
-        </div>
+            Your browser does not support video playback.
+        </video>
+    </div>
 
-        <p class="description">
-            This video is served directly as a static asset by Vercel.
-        </p>
+    <p class="info">
+        Tap play to watch the video.
+    </p>
 
-        <div id="status" class="status">
-            Checking application status…
-        </div>
-    </main>
+</main>
 
-    <script>
-        async function checkHealth() {
-            const status = document.getElementById("status");
-
-            try {
-                const response = await fetch("/api/health");
-
-                if (!response.ok) {
-                    throw new Error("Health check failed");
-                }
-
-                const data = await response.json();
-
-                if (data.status === "ok") {
-                    status.textContent = "Application is running.";
-                    status.classList.add("ok");
-                } else {
-                    throw new Error("Unexpected response");
-                }
-            } catch (error) {
-                status.textContent = "API is unavailable.";
-                status.classList.add("error");
-            }
-        }
-
-        checkHealth();
-    </script>
 </body>
 </html>
-
